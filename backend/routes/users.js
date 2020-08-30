@@ -22,4 +22,8 @@ router.get("/bbbb", function (req, res, next) {
   res.json({ status: 200, data: { msg: "bbbb" } });
 });
 
+router.get("/master", function (req, res, next) {
+  res.json({ status: 200, data: { msg: "master" } });
+});
+
 module.exports = router;
