@@ -14,4 +14,8 @@ router.get("/hohoho", function (req, res, next) {
   res.json({ status: 200, data: { msg: "hohohoho" } });
 });
 
+router.get("/ahahahah", function (req, res, next) {
+  res.json({ status: 200, data: { msg: "ahahahah" } });
+});
+
 module.exports = router;
