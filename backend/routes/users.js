@@ -31,26 +31,33 @@ router.get("/hoho", (req, res, next) => {
 });
 
 router.get("/hohoho", async (req, res, next) => {
-  const connection = await pool.getConnection();
-  // 뒤에 메타 데이터 따라옴
-  // const results = await connection.query(`SELECT * FROM user_TB`);
-  // 처음 원하는 데이터만 받기
-  const [results] = await connection.query(`SELECT * FROM user_TB`);
-  //pool로 커넥션 돌려줌
-  connection.release();
-  res.json({ status: 200, arr: results });
+  try {
+    const connection = await pool.getConnection();
+    // 뒤에 메타 데이터 따라옴
+    // const results = await connection.query(`SELECT * FROM user_TB`);
+    // 처음 원하는 데이터만 받기
+    const [results] = await connection.query(`SELECT * FROM user_TB`);
+    //pool로 커넥션 돌려줌
+    connection.release();
+    res.json({ status: 200, arr: results });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: 500, msg: "서버에러!" });
+  }
 });
 
-router.get("/ahahahah", (req, res, next) => {
-  res.json({ status: 200, data: { msg: "ahahahah" } });
-});
-
-router.get("/bbbb", (req, res, next) => {
-  res.json({ status: 200, data: { msg: "bbbb" } });
-});
-
-router.get("/master", (req, res, next) => {
-  res.json({ status: 200, data: { msg: "master" } });
+router.post("/", async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const connection = await pool.getConnection();
+    await connection.query(`INSERT INTO user_TB(email) VALUES(?)`, [email]);
+    //pool로 커넥션 돌려줌
+    connection.release();
+    res.json({ status: 201, msg: "회원가입 성공" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: 500, msg: "서버에러!" });
+  }
 });
 
 module.exports = router;
